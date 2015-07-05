@@ -112,4 +112,18 @@ class Mailchimp extends AbstractService
         // Allow chaining.
         return $this;
     }
+    
+    public function getMetaData(StdOAuth2Token $token)
+    {
+        // Make request uri.
+        $endpoint = 'https://login.mailchimp.com/oauth2/metadata?oauth_token='. $token->getAccessToken();
+
+        // Grab meta data about the token.
+        $response = $this->httpClient->retrieveResponse(new Uri($endpoint), array(), array(), 'GET');
+
+        // Parse JSON.
+        $meta = json_decode($response, true);
+
+        return $meta;
+    }
 }
